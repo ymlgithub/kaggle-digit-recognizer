@@ -37,10 +37,11 @@ labels_train.shape, pixels_train.shape, pixels_test.shape, data_submission.shape
 def get_model():
     model = Sequential()
     model.add(Conv2D(64, (3, 3), input_shape=(28, 28, 1)))
-    model.add(Dropout(0.2))
+    model.add(MaxPooling2D((2, 2)))
+    # model.add(Dropout(0.2))
     model.add(Conv2D(32, (3, 3)))
     model.add(Flatten())
-    model.add(Dropout(0.2))
+    # model.add(Dropout(0.2))
     model.add(Dense(128, activation='relu'))
     # model.add(Dense(32, activation='relu'))
     model.add(Dense(10, activation='softmax'))
@@ -58,14 +59,14 @@ ckpt = ModelCheckpoint(
 estop = EarlyStopping(monitor='val_acc', min_delta=1e-5,
                       verbose=1, patience=20)
 # %%
-model.fit(pixels_train.reshape((-1, 28, 28, 1)),
-          keras.utils.to_categorical(labels_train),
-          callbacks=[ckpt, estop],
-          batch_size=64, epochs=500, validation_split=0.2)
+# model.fit(pixels_train.reshape((-1, 28, 28, 1)),
+#           keras.utils.to_categorical(labels_train),
+#           callbacks=[ckpt, estop],
+#           batch_size=256, epochs=500, validation_split=0.2)
 
 
 # %%
-# model = load_model('tmp/ckpt-016-acc_0.99381-val_acc_0.97369.h5')
+model = load_model('tmp/ckpt-041-acc_0.99777-val_acc_0.98214.h5')
 
 
 # %%
@@ -78,13 +79,13 @@ data_submission['Label'] = labels_pred
 data_submission.to_csv('submission.csv')
 
 # %%
-plt.figure(figsize=(6, 5))
-for i in range(3):
-    plt.subplot(2, 3, i+1)
+plt.figure(figsize=(12, 5))
+for i in range(6):
+    plt.subplot(2, 6, i+1)
     plt.imshow(pixels_train[i])
     plt.title(labels_train[i])
-for i in range(3):
-    plt.subplot(2, 3, i+4)
+for i in range(6):
+    plt.subplot(2, 6, i+7)
     plt.imshow(pixels_test[i])
     plt.title(labels_pred[i])
 

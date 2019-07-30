@@ -1,6 +1,6 @@
-data/
-tmp/
-!*/.keep
+data/*
+tmp/*
+!.keep
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

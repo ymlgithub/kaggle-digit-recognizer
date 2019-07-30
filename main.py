@@ -32,7 +32,7 @@ for i in range(3):
 
 def get_model():
     model = Sequential()
-    model.add(Conv2D(64, (3, 3), input_shape=(28, 28, 1)))
+    model.add(Conv2D(32, (3, 3), input_shape=(28, 28, 1)))
     # model.add(Conv2D(32, (3, 3)))
     model.add(Flatten())
     # model.add(Dropout(0.2))

@@ -36,11 +36,11 @@ labels_train.shape, pixels_train.shape, pixels_test.shape, data_submission.shape
 
 def get_model():
     model = Sequential()
-    model.add(Conv2D(32, (3, 3), input_shape=(28, 28, 1)))
-    # model.add(Conv2D(32, (3, 3)))
-    # model.add(Dropout(0.2))
+    model.add(Conv2D(64, (3, 3), input_shape=(28, 28, 1)))
+    model.add(Dropout(0.2))
+    model.add(Conv2D(32, (3, 3)))
     model.add(Flatten())
-    # model.add(Dropout(0.2))
+    model.add(Dropout(0.2))
     model.add(Dense(128, activation='relu'))
     # model.add(Dense(32, activation='relu'))
     model.add(Dense(10, activation='softmax'))
@@ -54,7 +54,7 @@ model = get_model()
 model.summary()
 # %%
 ckpt = ModelCheckpoint(
-    'tmp/ckpt-{epoch:03d}-acc_{acc:.5f}-val_acc_{val_acc:.5f}.h5', save_best_only=True)
+    'tmp/ckpt-{epoch:03d}-acc_{acc:.5f}-val_acc_{val_acc:.5f}.h5', save_best_only=True, monitor='val_acc')
 estop = EarlyStopping(monitor='val_acc', min_delta=1e-5,
                       verbose=1, patience=20)
 # %%
@@ -65,7 +65,7 @@ model.fit(pixels_train.reshape((-1, 28, 28, 1)),
 
 
 # %%
-model = load_model('tmp/ckpt-016-acc_0.99381-val_acc_0.97369.h5')
+# model = load_model('tmp/ckpt-016-acc_0.99381-val_acc_0.97369.h5')
 
 
 # %%
